@@ -43,6 +43,7 @@ Analyze her mood through her girlfriend's words .
 ### 4、主要功能
 
 ####   1) 分词
+
  * `jieba.cut` 方法接受三个输入参数: 需要分词的字符串；cut_all 参数用来控制是否采用全模式；HMM 参数用来控制是否使用 HMM 模型
  * `jieba.cut_for_search` 方法接受两个参数：需要分词的字符串；是否使用 HMM 模型。该方法适合用于搜索引擎构建倒排索引的分词，粒度比较细
  * 待分词的字符串可以是 unicode 或 UTF-8 字符串、GBK 字符串。注意：不建议直接输入 GBK 字符串，可能无法预料地错误解码成 UTF-8
@@ -69,12 +70,15 @@ output :
 我要, 有, 女朋友, 了
 搜索引擎模式: 我要, 有, 朋友, 女朋友, 了, ，, 然后, 我要, 打爆, 室友, 的, 狗头
 ```
+
 ####   2) 添加自定义词典
+
  >载入词典
  * 开发者可以指定自己自定义的词典，以便包含 jieba 词库里没有的词。虽然 jieba 有新词识别能力，但是自行添加新词可以保证更高的正确率
  * 用法： jieba.load_userdict(file_name) # file_name 为文件类对象或自定义词典的路径
  * 词典格式和 `dict.txt` 一样，一个词占一行；每一行分三部分：词语、词频（可省略）、词性（可省略），用空格隔开，顺序不可颠倒。`file_name` 若为路径或二进制方式打开的文件，则文件必须为 UTF-8 编码。
  * 词频省略时使用自动计算的能保证分出该词的词频。
+
 ```python
 print('/'.join(jieba.cut('这个东梨会不会被分开呢。', HMM=False)))
 # 添加字典
@@ -86,6 +90,7 @@ output :
 这个/东/梨/会/不会/被/分开/呢/。
 这个/东梨/会/不会/被/分开/呢/。
 ```
+
 
  >调整词典
 
@@ -173,6 +178,7 @@ words = jieba.posseg.cut("我爱北京天安门")
 for word, flag in words:
     print('%s %s' % (word, flag))
 print('='*40)
+
 ```
 output :
 ```
@@ -182,11 +188,13 @@ output :
 天安门 ns
 ```
 ####   5) 并行分词
+
 * 原理：将目标文本按行分隔后，把各行文本分配到多个 Python 进程并行分词，然后归并结果，从而获得分词速度的可观提升
 * 基于 python 自带的 multiprocessing 模块，目前暂不支持 Windows
 * 用法：
     * `jieba.enable_parallel(4)` # 开启并行分词模式，参数为并行进程数
     * `jieba.disable_parallel()` # 关闭并行分词模式
+    
 
 ####   6) Tokenize：返回词语在原文的起止位置
 * 注意，输入参数只接受 unicode
